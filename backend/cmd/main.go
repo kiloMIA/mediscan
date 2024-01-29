@@ -39,8 +39,12 @@ func main() {
     chatHandler := handlers.NewChatHandler(chatHub, lg)
 
 	router := router.NewRouter(userh, chatHandler)
+
+	fs := http.FileServer(http.Dir("./static"))
+    http.Handle("/static/", http.StripPrefix("/static/", fs))
+	
 	http.Handle("/", router)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8082", nil))
 }
 
 func init() {

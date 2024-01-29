@@ -1,4 +1,4 @@
-FROM golang:1.21 AS builder
+FROM golang:1.21.6 as builder
 
 WORKDIR /app
 
@@ -9,15 +9,14 @@ COPY . .
 
 RUN go build -o main ./cmd/main.go
 
-FROM golang:1.21 
+FROM golang:1.21.6
 
 WORKDIR /app
 
-# Copy only the necessary artifacts from the builder stage
-COPY --from=builder /app/main /app/main
-COPY --from=builder /app/go.mod /app/go.mod
-COPY --from=builder /app/go.sum /app/go.sum
+COPY --from=builder /app/main .
 
-EXPOSE 8080
+COPY --from=builder /app/static ./static
+
+EXPOSE 8082
 
 CMD ["/app/main"]
