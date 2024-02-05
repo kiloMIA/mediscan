@@ -1,4 +1,4 @@
-package db
+package internal
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
-
 
 func ConnectDB() (*pgxpool.Pool, error) {
 	connURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",

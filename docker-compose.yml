@@ -1,25 +1,26 @@
 version: '3.8'
 
 services:
-  app:
-    build: './backend'
+  mediscan:
+    build: './'
     ports:
       - 8082:8082
     environment:
       TZ: "Asia/Almaty"
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
-      MAIL: ${MAIL}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
     env_file:
       - .env
     depends_on:
       db:
         condition: service_healthy
     restart: on-failure
+    volumes:
+      - ./uploads:/uploads
 
 
   db:
@@ -56,7 +57,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./db/migrations:/migrations
+      - ./migrations:/migrations
     entrypoint:
       [
         "migrate",
